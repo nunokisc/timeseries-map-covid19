@@ -152,7 +152,7 @@
                 color: '#8c0000',
                 radius: radius
             });
-            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[this.value]].confirmed + "<br>" + "Deaths: " + dados.data[dates[this.value]].deaths + "<br>" + "Recovered: " + dados.data[dates[this.value]].recovered
+            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
         })
