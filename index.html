@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
+    <meta name="description"
+        content="Covid19 outbreak spread. See the spread of the covid19 outbreak on a map day by day.">
+    <meta name="keywords"
+        content="coronavirus, covid-19, tracker, dashboard, preperation, prevention, trends, statistics, data, outbreak, timeleapsed, propagation, covid19, map">
     <!-- Make sure you put this AFTER Leaflet's CSS -->
 
 
@@ -86,7 +90,8 @@
         <footer>
             <!-- Copyright -->
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://nunocardoso.eu"> nunocardoso.eu </a> & <a href="https://github.com/nunokisc"> github.com/nunokisc</a>
+                <a href="https://nunocardoso.eu"> nunocardoso.eu </a> & <a href="https://github.com/nunokisc">
+                    github.com/nunokisc</a>
             </div>
             <!-- Copyright -->
 
@@ -146,7 +151,7 @@
                 color: '#8c0000',
                 radius: radius
             });
-            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[this.value]].confirmed + "<br>" + "Deaths: " + dados.data[dates[this.value]].deaths + "<br>" + "Recovered: " + dados.data[dates[this.value]].recovered 
+            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[this.value]].confirmed + "<br>" + "Deaths: " + dados.data[dates[this.value]].deaths + "<br>" + "Recovered: " + dados.data[dates[this.value]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
         })
@@ -175,7 +180,7 @@
                 color: '#8c0000',
                 radius: radius
             });
-            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered 
+            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
         })
