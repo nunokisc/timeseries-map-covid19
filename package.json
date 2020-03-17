@@ -1,0 +1,26 @@
+{
+  "name": "timeseries-map-covid19",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nunokisc/timeseries-map-covid19.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nunokisc/timeseries-map-covid19/issues"
+  },
+  "homepage": "https://github.com/nunokisc/timeseries-map-covid19#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parse": "^4.8.8",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.3.0"
+  }
+}

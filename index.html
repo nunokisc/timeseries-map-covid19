@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Covid19 outbreak spread</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+
+
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        #mapid {
+            height: 500px;
+        }
+
+        .slidecontainer {
+            width: 100%;
+            /* Width of the outside container */
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Timeseries-Map-Covid19</h1>
+            <h4>Covid19 outbreak spread</h4>
+            <div id="mapid"></div>
+            <h3>Options</h3>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+                    </div>
+                    <div id="date"></div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <!-- Copyright -->
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://nunocardoso.eu"> nunocardoso.eu</a>
+            </div>
+            <!-- Copyright -->
+
+        </footer>
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var navigator_info = window.navigator;
+    var screen_info = window.screen;
+    var uid = navigator_info.mimeTypes.length;
+    uid += navigator_info.userAgent.replace(/\D+/g, '');
+    uid += navigator_info.plugins.length;
+    uid += screen_info.height || '';
+    uid += screen_info.width || '';
+    uid += screen_info.pixelDepth || '';
+    var dados = [];
+    var dates = [];
+    var socket = io(window.location.href + '?token=' + uid);
+
+    var mymap = L.map('mapid').setView([38.741107, -9.1435107], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        maxZoom: 18,
+    }).addTo(mymap);
+    var markerLayer = new L.LayerGroup();
+    var slider = document.getElementById("myRange");
+
+    slider.oninput = function () {
+
+        $("#date").html(dates[this.value])
+        markerLayer.clearLayers();
+        dados.forEach(dados => {
+            var lat = dados.lat;
+            var lon = dados.lon;
+            var location = dados.country;
+            let radius = 0;
+            if ((dados.data[dates[this.value]].confirmed - dados.data[dates[this.value]].deaths - dados.data[dates[this.value]].recovered) / 100 > 200) {
+                radius = 200;
+            }
+            else {
+                radius = (dados.data[dates[this.value]].confirmed - dados.data[dates[this.value]].deaths - dados.data[dates[this.value]].recovered) / 100
+            }
+            var markerLocation = new L.LatLng(lat, lon);
+            var marker = new L.circleMarker(markerLocation, {
+                color: '#3388ff',
+                radius: radius
+            });
+            marker.addTo(markerLayer);
+            marker.bindPopup(location);
+        })
+        markerLayer.addTo(mymap);
+    }
+
+    socket.on('data', function (msg) {
+        dados = msg.results;
+        dates = msg.dates;
+        slider.max = dates.length - 1;
+        $("#date").html(dates[slider.value])
+
+        dados.forEach(dados => {
+            var lat = dados.lat;
+            var lon = dados.lon;
+            var location = dados.country;
+            let radius = 0;
+            if ((dados.data[dates[0]].confirmed - dados.data[dates[0]].deaths - dados.data[dates[0]].recovered) / 100 > 200) {
+                radius = 200;
+            }
+            else {
+                radius = (dados.data[dates[0]].confirmed - dados.data[dates[0]].deaths - dados.data[dates[0]].recovered) / 100
+            }
+            var markerLocation = new L.LatLng(lat, lon);
+            var marker = new L.circleMarker(markerLocation, {
+                color: '#3388ff',
+                radius: radius
+            });
+            marker.addTo(markerLayer);
+            marker.bindPopup(location);
+        })
+        markerLayer.addTo(mymap);
+    });
+
+
+</script>
