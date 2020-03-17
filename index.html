@@ -169,6 +169,7 @@
             var lat = dados.lat;
             var lon = dados.lon;
             var location = dados.country;
+            var province = dados.province;
             let radius = 0;
             if ((dados.data[dates[0]].confirmed - dados.data[dates[0]].deaths - dados.data[dates[0]].recovered) / 100 > 200) {
                 radius = 200;
@@ -181,7 +182,7 @@
                 color: '#8c0000',
                 radius: radius
             });
-            let text = "Location: " + location + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered
+            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
         })
