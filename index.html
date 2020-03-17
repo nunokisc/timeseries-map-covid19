@@ -140,6 +140,7 @@
             var lat = dados.lat;
             var lon = dados.lon;
             var location = dados.country;
+            var province = dados.province;
             let radius = 0;
             if ((dados.data[dates[this.value]].confirmed - dados.data[dates[this.value]].deaths - dados.data[dates[this.value]].recovered) / 100 > 200) {
                 radius = 200;
