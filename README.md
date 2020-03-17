@@ -13,4 +13,3 @@ License
 
 This project is licensed under the [GNU General Public License v3.0](https://github.com/rodrilima/corona-analytic-api/blob/master/LICENSE)
 
-**Free Software, Hell Yeah!**
