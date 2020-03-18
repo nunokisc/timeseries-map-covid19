@@ -2,194 +2,182 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Covid19 outbreak spread</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-        crossorigin="" />
-    <meta name="description"
-        content="Covid19 outbreak spread. See the spread of the covid19 outbreak on a map day by day.">
-    <meta name="keywords"
-        content="coronavirus, covid-19, tracker, dashboard, preparation, prevention, trends, statistics, data, outbreak, timelapse, propagation, covid19, map, staythefuckhome, stayfuckinghome">
-    <meta name="google-site-verification" content="7MdXI0Pt6oM2HVl1zGmN6RPYoPKbygIzDduXFOF0YaM" />
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <meta charset="UTF-8">
+  <title>Covid19 outbreak spread</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.css' rel="stylesheet">
+  <meta name="description"
+    content="Covid19 outbreak spread. See the spread of the covid19 outbreak on a map day by day.">
+  <meta name="keywords"
+    content="coronavirus, covid-19, tracker, dashboard, preparation, prevention, trends, statistics, data, outbreak, timelapse, propagation, covid19, map, staythefuckhome, stayfuckinghome">
+  <meta name="google-site-verification" content="7MdXI0Pt6oM2HVl1zGmN6RPYoPKbygIzDduXFOF0YaM" />
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
 
 
-    <style>
-        body {
-            padding-top: 50px;
-            background-color: rgb(21, 32, 43);
-            overflow-y: hidden;
-        }
+  <style>
+    body {
+      padding-top: 50px;
+      background-color: rgb(21, 32, 43);
+    }
 
-        footer {
-            background-color: #e9ecef;
-            width: 100%;
-            border-top-left-radius: .3rem;
-            border-top-right-radius: .3rem;
-        }
+    footer {
+      background-color: #e9ecef;
+      width: 100%;
+      border-top-left-radius: .3rem;
+      border-top-right-radius: .3rem;
+    }
 
-        #mapid {
-            height: 500px;
-        }
+    #mapid {
+      height: 500px;
+    }
 
-        .slidecontainer {
-            width: 100%;
-            /* Width of the outside container */
-        }
-
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            border-radius: 5px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #0099ff;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #0099ff;
-            cursor: pointer;
-        }
-    </style>
+    .noUi-handle {
+      border: 1px solid #D9D9D9;
+      border-radius: 3px;
+      background: #0099ff;
+      cursor: default;
+      box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Timeseries-Map-Covid19</h1>
-            <h4>Covid19 outbreak spread</h4>
-            <div id="mapid"></div>
-            <h3>Time lapse</h3>(Move the slider to see the spread of the outbreak)
-            <div class="row">
-                <div class="col-sm">
-                    <div class="slidecontainer">
-                        <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
-                    </div>
-                    <div id="date"></div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Timeseries-Map-Covid19</h1>
+      <h4>Covid19 outbreak spread</h4>
+      <div id="mapid"></div>
+      <h3>Time lapse</h3><h6>(Move the slider to see the spread of the outbreak)</h6>
+      <div class="row">
+        <div class="col-sm">
+          <div id="slider"></div>
+          <div id="date"></div>
         </div>
-        <footer>
-            <!-- Copyright -->
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://nunocardoso.eu"> nunocardoso.eu </a> & <a href="https://github.com/nunokisc">
-                    github.com/nunokisc</a>
-            </div>
-            <!-- Copyright -->
+      </div>
+    </div>
+    <footer>
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://nunocardoso.eu"> nunocardoso.eu </a> & <a href="https://github.com/nunokisc">
+          github.com/nunokisc</a>
+      </div>
+      <!-- Copyright -->
 
-        </footer>
+    </footer>
 </body>
 
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.js"
+  integrity="sha256-1ubcV7PzqcMhAz7jsoU3QlAfCnUaY7SUffeHa4Nq3ws=" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js" crossorigin="anonymous"></script>
-
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""></script>
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var navigator_info = window.navigator;
-    var screen_info = window.screen;
-    var uid = navigator_info.mimeTypes.length;
-    uid += navigator_info.userAgent.replace(/\D+/g, '');
-    uid += navigator_info.plugins.length;
-    uid += screen_info.height || '';
-    uid += screen_info.width || '';
-    uid += screen_info.pixelDepth || '';
-    var dados = [];
-    var dates = [];
-    var socket = io(window.location.href + '?token=' + uid);
+  var navigator_info = window.navigator;
+  var screen_info = window.screen;
+  var uid = navigator_info.mimeTypes.length;
+  uid += navigator_info.userAgent.replace(/\D+/g, '');
+  uid += navigator_info.plugins.length;
+  uid += screen_info.height || '';
+  uid += screen_info.width || '';
+  uid += screen_info.pixelDepth || '';
+  var dados = [];
+  var dates = [];
+  var socket = io(window.location.href + '?token=' + uid);
 
-    var mymap = L.map('mapid').setView([38.741107, -9.1435107], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        maxZoom: 18,
-    }).addTo(mymap);
-    var markerLayer = new L.LayerGroup();
-    var slider = document.getElementById("myRange");
+  var mymap = L.map('mapid').setView([38.741107, -9.1435107], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    maxZoom: 18,
+  }).addTo(mymap);
+  var markerLayer = new L.LayerGroup();
 
-    slider.oninput = function () {
+  var rangeSlider = document.getElementById('slider');
 
-        $("#date").html(dates[this.value])
-        markerLayer.clearLayers();
-        dados.forEach(dados => {
-            var lat = dados.lat;
-            var lon = dados.lon;
-            var location = dados.country;
-            var province = dados.province;
-            let radius = 0;
-            if ((dados.data[dates[this.value]].confirmed - dados.data[dates[this.value]].deaths - dados.data[dates[this.value]].recovered) / 100 > 200) {
-                radius = 200;
-            }
-            else {
-                radius = (dados.data[dates[this.value]].confirmed - dados.data[dates[this.value]].deaths - dados.data[dates[this.value]].recovered) / 100
-            }
-            var markerLocation = new L.LatLng(lat, lon);
-            var marker = new L.circleMarker(markerLocation, {
-                color: '#8c0000',
-                radius: radius
-            });
-            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[this.value]].confirmed + "<br>" + "Deaths: " + dados.data[dates[this.value]].deaths + "<br>" + "Recovered: " + dados.data[dates[this.value]].recovered
-            marker.addTo(markerLayer);
-            marker.bindPopup(text);
-        })
-        markerLayer.addTo(mymap);
+  noUiSlider.create(rangeSlider, {
+    start: [0],
+    step: 1,
+    range: {
+      'min': [0],
+      'max': [50]
     }
+  });
 
-    socket.on('data', function (msg) {
-        dados = msg.results;
-        dates = msg.dates;
-        slider.max = dates.length - 1;
-        slider.value = dates.length - 1;
-        $("#date").html(dates[slider.value])
+  var rangeSliderValueElement = document.getElementById('date');
 
-        dados.forEach(dados => {
-            var lat = dados.lat;
-            var lon = dados.lon;
-            var location = dados.country;
-            var province = dados.province;
-            let radius = 0;
-            if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100 > 200) {
-                radius = 200;
-            }
-            else {
-                radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100
-            }
-            var markerLocation = new L.LatLng(lat, lon);
-            var marker = new L.circleMarker(markerLocation, {
-                color: '#8c0000',
-                radius: radius
-            });
-            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
-            marker.addTo(markerLayer);
-            marker.bindPopup(text);
-        })
-        markerLayer.addTo(mymap);
+  rangeSlider.noUiSlider.on('update', function (values, handle) {
+    $("#date").html(dates[parseInt(values[handle])])
+    markerLayer.clearLayers();
+    dados.forEach(dados => {
+      var lat = dados.lat;
+      var lon = dados.lon;
+      var location = dados.country;
+      var province = dados.province;
+      let radius = 0;
+      if ((dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 100 > 200) {
+        radius = 200;
+      }
+      else {
+        radius = (dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 100
+      }
+      var markerLocation = new L.LatLng(lat, lon);
+      var marker = new L.circleMarker(markerLocation, {
+        color: '#8c0000',
+        radius: radius
+      });
+      let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[parseInt(values[handle])]].confirmed + "<br>" + "Deaths: " + dados.data[dates[parseInt(values[handle])]].deaths + "<br>" + "Recovered: " + dados.data[dates[parseInt(values[handle])]].recovered
+      marker.addTo(markerLayer);
+      marker.bindPopup(text);
+    })
+    markerLayer.addTo(mymap);
+  });
+
+  socket.on('data', function (msg) {
+    dados = msg.results;
+    dates = msg.dates;
+    rangeSlider.noUiSlider.updateOptions({
+      start: dates.length - 1,
+      range: {
+        'min': 0,
+        'max': dates.length - 1
+      }
     });
+    $("#date").html(dates[slider.value])
+
+    dados.forEach(dados => {
+      var lat = dados.lat;
+      var lon = dados.lon;
+      var location = dados.country;
+      var province = dados.province;
+      let radius = 0;
+      if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100 > 200) {
+        radius = 200;
+      }
+      else {
+        radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100
+      }
+      var markerLocation = new L.LatLng(lat, lon);
+      var marker = new L.circleMarker(markerLocation, {
+        color: '#8c0000',
+        radius: radius
+      });
+      let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
+      marker.addTo(markerLayer);
+      marker.bindPopup(text);
+    })
+    markerLayer.addTo(mymap);
+  });
 
 
 </script>
