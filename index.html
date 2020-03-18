@@ -164,6 +164,7 @@
         dados = msg.results;
         dates = msg.dates;
         slider.max = dates.length - 1;
+        slider.value = dates.length - 1;
         $("#date").html(dates[slider.value])
 
         dados.forEach(dados => {
@@ -183,7 +184,7 @@
                 color: '#8c0000',
                 radius: radius
             });
-            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[0]].confirmed + "<br>" + "Deaths: " + dados.data[dates[0]].deaths + "<br>" + "Recovered: " + dados.data[dates[0]].recovered
+            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
         })
