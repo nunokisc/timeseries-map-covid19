@@ -149,6 +149,13 @@
             let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[parseInt(values[handle])]].confirmed + "<br>" + "Deaths: " + dados.data[dates[parseInt(values[handle])]].deaths + "<br>" + "Recovered: " + dados.data[dates[parseInt(values[handle])]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
+            var marker = new L.circleMarker(markerLocation, {
+                color: '#000000',
+                stroke: false,
+                fillOpacity: 0.5,
+                radius: 1
+            });
+            marker.addTo(markerLayer);
         })
         markerLayer.addTo(mymap);
     });
@@ -185,6 +192,13 @@
             let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
             marker.addTo(markerLayer);
             marker.bindPopup(text);
+            var marker = new L.circleMarker(markerLocation, {
+                color: '#000000',
+                stroke: false,
+                fillOpacity: 0.5,
+                radius: 1
+            });
+            marker.addTo(markerLayer);
         })
         markerLayer.addTo(mymap);
     });
