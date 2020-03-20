@@ -8,7 +8,7 @@ https://covid19.nunocardoso.eu/
 
 All the information contained in the online website is updated every three hours with the data source provided by https://github.com/CSSEGISandData/COVID-19
 
-## Reference
+## API Reference
 
 ### AGGREG - Get all countries
 
