@@ -135,11 +135,11 @@
             var location = dados.country;
             var province = dados.province;
             let radius = 0;
-            if ((dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 100 > 200) {
-                radius = 200;
+            if ((dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 150 > 250) {
+                radius = 250;
             }
             else {
-                radius = (dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 100
+                radius = (dados.data[dates[parseInt(values[handle])]].confirmed - dados.data[dates[parseInt(values[handle])]].deaths - dados.data[dates[parseInt(values[handle])]].recovered) / 150
             }
             var markerLocation = new L.LatLng(lat, lon);
             var marker = new L.circleMarker(markerLocation, {
@@ -171,11 +171,11 @@
             var location = dados.country;
             var province = dados.province;
             let radius = 0;
-            if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100 > 200) {
-                radius = 200;
+            if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150 > 250) {
+                radius = 250;
             }
             else {
-                radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 100
+                radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150
             }
             var markerLocation = new L.LatLng(lat, lon);
             var marker = new L.circleMarker(markerLocation, {
