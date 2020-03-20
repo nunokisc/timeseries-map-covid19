@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 
 app.get('/:country/confirmed', function (req, res) {
     if (req.params.country == "all") {
-        res.json(confirmed);
+        res.status(200).json(confirmed);
     }
     else {
         let result = []
@@ -30,10 +30,10 @@ app.get('/:country/confirmed', function (req, res) {
             }
         });
         if (result.length > 0) {
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "country doesnt exists" });
+            res.status(400).json({ error: "country doesnt exists" });
         }
     }
 });
@@ -46,10 +46,10 @@ app.get('/:country/confirmed/:date/', function (req, res) {
                 line.data = line.data[req.params.date.replace(/-/g, "/")]
                 result.push(line);
             });
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
     else {
@@ -61,14 +61,14 @@ app.get('/:country/confirmed/:date/', function (req, res) {
                 }
             });
             if (result.length > 0) {
-                res.json(result);
+                res.status(200).json(result);
             }
             else {
-                res.json({ error: "country doesnt exists" });
+                res.status(400).json({ error: "country doesnt exists" });
             }
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
 
@@ -76,7 +76,7 @@ app.get('/:country/confirmed/:date/', function (req, res) {
 
 app.get('/:country/deaths', function (req, res) {
     if (req.params.country == "all") {
-        res.json(deaths);
+        res.status(200).json(deaths);
     }
     else {
         let result = []
@@ -86,10 +86,10 @@ app.get('/:country/deaths', function (req, res) {
             }
         });
         if (result.length > 0) {
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "country doesnt exists" });
+            res.status(400).json({ error: "country doesnt exists" });
         }
     }
 });
@@ -104,10 +104,10 @@ app.get('/:country/deaths/:date/', function (req, res) {
                 line.data = line.data[req.params.date.replace(/-/g, "/")]
                 result.push(line);
             });
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
     else {
@@ -119,14 +119,14 @@ app.get('/:country/deaths/:date/', function (req, res) {
                 }
             });
             if (result.length > 0) {
-                res.json(result);
+                res.status(200).json(result);
             }
             else {
-                res.json({ error: "country doesnt exists" });
+                res.status(400).json({ error: "country doesnt exists" });
             }
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
 
@@ -134,7 +134,7 @@ app.get('/:country/deaths/:date/', function (req, res) {
 
 app.get('/:country/recovered', function (req, res) {
     if (req.params.country == "all") {
-        res.json(recovered);
+        res.status(200).json(recovered);
     }
     else {
         let result = []
@@ -144,10 +144,10 @@ app.get('/:country/recovered', function (req, res) {
             }
         });
         if (result.length > 0) {
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "country doesnt exists" });
+            res.status(400).json({ error: "country doesnt exists" });
         }
     }
 });
@@ -160,10 +160,10 @@ app.get('/:country/recovered/:date/', function (req, res) {
                 line.data = line.data[req.params.date.replace(/-/g, "/")]
                 result.push(line);
             });
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
     else {
@@ -175,21 +175,21 @@ app.get('/:country/recovered/:date/', function (req, res) {
                 }
             });
             if (result.length > 0) {
-                res.json(result);
+                res.status(200).json(result);
             }
             else {
-                res.json({ error: "country doesnt exists" });
+                res.status(400).json({ error: "country doesnt exists" });
             }
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
 });
 
 app.get('/:country/aggregate/', function (req, res) {
     if (req.params.country == "all") {
-        res.json(results);
+        res.status(200).json(results);
     }
     else {
         let result = []
@@ -199,10 +199,10 @@ app.get('/:country/aggregate/', function (req, res) {
             }
         });
         if (result.length > 0) {
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "country doesnt exists" });
+            res.status(400).json({ error: "country doesnt exists" });
         }
     }
 });
@@ -215,10 +215,10 @@ app.get('/:country/aggregate/:date/', function (req, res) {
                 line.data = line.data[req.params.date.replace(/-/g, "/")]
                 result.push(line);
             });
-            res.json(result);
+            res.status(200).json(result);
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
     else {
@@ -230,19 +230,19 @@ app.get('/:country/aggregate/:date/', function (req, res) {
                 }
             });
             if (result.length > 0) {
-                res.json(result);
+                res.status(200).json(result);
             }
             else {
-                res.json({ error: "country doesnt exists" });
+                res.status(400).json({ error: "country doesnt exists" });
             }
         }
         else {
-            res.json({ error: "date out of range" });
+            res.status(400).json({ error: "date out of range" });
         }
     }
 });
 app.get('/dates', function (req, res) {
-    res.json(dates);
+    res.status(200).json(dates);
 });
 
 
