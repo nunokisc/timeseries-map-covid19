@@ -92,19 +92,9 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-<script src="/socket.io/socket.io.js"></script>
 <script>
-    var navigator_info = window.navigator;
-    var screen_info = window.screen;
-    var uid = navigator_info.mimeTypes.length;
-    uid += navigator_info.userAgent.replace(/\D+/g, '');
-    uid += navigator_info.plugins.length;
-    uid += screen_info.height || '';
-    uid += screen_info.width || '';
-    uid += screen_info.pixelDepth || '';
     var dados = [];
     var dates = [];
-    var socket = io(window.location.href + '?token=' + uid);
 
     var mymap = L.map('mapid').setView([38.741107, -9.1435107], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -160,48 +150,55 @@
         markerLayer.addTo(mymap);
     });
 
-    socket.on('data', function (msg) {
-        dados = msg.results;
-        dates = msg.dates;
-        rangeSlider.noUiSlider.updateOptions({
-            start: dates.length - 1,
-            range: {
-                'min': 0,
-                'max': dates.length - 1
-            }
-        });
-        $("#date").html(dates[slider.value])
+    $.ajax({
+        url: '/all/aggregate',
+        success: function (data) {
+            dados = data;
+            $.ajax({
+                url: '/dates',
+                success: function (ddata) {
+                    dates = ddata;
+                    rangeSlider.noUiSlider.updateOptions({
+                        start: dates.length - 1,
+                        range: {
+                            'min': 0,
+                            'max': dates.length - 1
+                        }
+                    });
+                    $("#date").html(dates[slider.value])
 
-        dados.forEach(dados => {
-            var lat = dados.lat;
-            var lon = dados.lon;
-            var location = dados.country;
-            var province = dados.province;
-            let radius = 0;
-            if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150 > 250) {
-                radius = 250;
-            }
-            else {
-                radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150
-            }
-            var markerLocation = new L.LatLng(lat, lon);
-            var marker = new L.circleMarker(markerLocation, {
-                color: '#8c0000',
-                radius: radius
-            });
-            let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
-            marker.addTo(markerLayer);
-            marker.bindPopup(text);
-            var marker = new L.circleMarker(markerLocation, {
-                color: '#000000',
-                stroke: false,
-                fillOpacity: 0.5,
-                radius: 1
-            });
-            marker.addTo(markerLayer);
-        })
-        markerLayer.addTo(mymap);
-    });
-
+                    dados.forEach(dados => {
+                        var lat = dados.lat;
+                        var lon = dados.lon;
+                        var location = dados.country;
+                        var province = dados.province;
+                        let radius = 0;
+                        if ((dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150 > 250) {
+                            radius = 250;
+                        }
+                        else {
+                            radius = (dados.data[dates[dates.length - 1]].confirmed - dados.data[dates[dates.length - 1]].deaths - dados.data[dates[dates.length - 1]].recovered) / 150
+                        }
+                        var markerLocation = new L.LatLng(lat, lon);
+                        var marker = new L.circleMarker(markerLocation, {
+                            color: '#8c0000',
+                            radius: radius
+                        });
+                        let text = "Location: " + location + " - " + province + "<br>" + "Confirmed: " + dados.data[dates[dates.length - 1]].confirmed + "<br>" + "Deaths: " + dados.data[dates[dates.length - 1]].deaths + "<br>" + "Recovered: " + dados.data[dates[dates.length - 1]].recovered
+                        marker.addTo(markerLayer);
+                        marker.bindPopup(text);
+                        var marker = new L.circleMarker(markerLocation, {
+                            color: '#000000',
+                            stroke: false,
+                            fillOpacity: 0.5,
+                            radius: 1
+                        });
+                        marker.addTo(markerLayer);
+                    })
+                    markerLayer.addTo(mymap);
+                }
+            })
+        }
+    })
 
 </script>

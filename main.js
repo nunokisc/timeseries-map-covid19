@@ -1,10 +1,8 @@
 const fs = require("fs");
 const parse = require("csv-parse/lib/sync");
 const express = require('express');
-const cors = require('cors');
 const app = express();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
 
 const FILENAME_CONFIRMED = "/confirmed.csv"
 const FILENAME_DEATHS = "/deaths.csv"
@@ -244,21 +242,6 @@ app.get('/:country/aggregate/:date/', function (req, res) {
 app.get('/dates', function (req, res) {
     res.status(200).json(dates);
 });
-
-
-
-
-io.on('connection', function (socket) {
-    console.log('a user connected');
-    socket.join(socket.handshake.query.token);
-
-    io.to(socket.handshake.query.token).emit("data", { dates: dates, results: results });
-
-    socket.on('disconnect', function () {
-        console.log('user disconnected');
-    });
-});
-
 
 function extract(filename) {
     const csv = fs.readFileSync(__dirname + filename);
