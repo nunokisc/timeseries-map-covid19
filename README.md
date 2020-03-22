@@ -60,6 +60,12 @@ https://covid19.nunocardoso.eu/:country/(confirmed/deaths/recovered)
 https://covid19.nunocardoso.eu/:country/(confirmed/deaths/recovered)/:date
 ```
 
+### Get available dates
+
+```
+https://covid19.nunocardoso.eu/dates
+```
+
 
 License
 ----
