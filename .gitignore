@@ -1,6 +1,7 @@
 confirmed.csv
 deaths.csv
 recovered.csv
+portugal.json
 # Logs
 logs
 *.log
