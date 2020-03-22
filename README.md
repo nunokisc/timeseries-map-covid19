@@ -23,11 +23,17 @@ https://covid19.nunocardoso.eu/all/aggregate
 ```
 https://covid19.nunocardoso.eu/all/aggregate/:date
 ```
+```
+ex: https://covid19.nunocardoso.eu/all/aggregate/2-12-20
+```
 
 ### AGGREG - Get one country
 
 ```
 https://covid19.nunocardoso.eu/:country/aggregate
+```
+```
+ex: https://covid19.nunocardoso.eu/portugal/aggregate
 ```
 
 ### AGGREG - Get one country by one date (Date format for now "M-D-YY")
@@ -35,11 +41,17 @@ https://covid19.nunocardoso.eu/:country/aggregate
 ```
 https://covid19.nunocardoso.eu/:country/aggregate/:date
 ```
+```
+ex: https://covid19.nunocardoso.eu/portugal/aggregate/3-20-20
+```
 
 ### SPLIT - Get all (confirmed/deaths/recovered) in every countries
 
 ```
 https://covid19.nunocardoso.eu/all/(confirmed/deaths/recovered)
+```
+```
+ex: https://covid19.nunocardoso.eu/all/confirmed
 ```
 
 ### SPLIT - Get all (confirmed/deaths/recovered) by one date (Date format for now "M-D-YY")
@@ -47,17 +59,26 @@ https://covid19.nunocardoso.eu/all/(confirmed/deaths/recovered)
 ```
 https://covid19.nunocardoso.eu/all/(confirmed/deaths/recovered)/:date
 ```
+```
+ex: https://covid19.nunocardoso.eu/all/confirmed/3-20-20
+```
 
 ### SPLIT - Get (confirmed/deaths/recovered) by one contry 
 
 ```
 https://covid19.nunocardoso.eu/:country/(confirmed/deaths/recovered)
 ```
+```
+ex: https://covid19.nunocardoso.eu/portugal/confirmed
+```
 
 ### SPLIT - Get (confirmed/deaths/recovered) in one contry by date (Date format for now "M-D-YY")
 
 ```
 https://covid19.nunocardoso.eu/:country/(confirmed/deaths/recovered)/:date
+```
+```
+ex: https://covid19.nunocardoso.eu/portugal/confirmed/3-20-20
 ```
 
 ### Get available dates
