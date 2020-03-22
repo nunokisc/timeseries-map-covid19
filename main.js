@@ -264,8 +264,14 @@ function extract(filename) {
         }
         else {
             //console.log(country)
-            row["province"] = ""
-            row["country"] = country
+            if (country == "Portugal") {
+                row["province"] = "Total"
+                row["country"] = country
+            }
+            else {
+                row["province"] = ""
+                row["country"] = country
+            }
         }
         row["lat"] = lat;
         row["lon"] = long;
