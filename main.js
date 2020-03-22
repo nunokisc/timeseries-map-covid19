@@ -3,10 +3,13 @@ const parse = require("csv-parse/lib/sync");
 const express = require('express');
 const app = express();
 var http = require('http').createServer(app);
+var dateFormat = require('dateformat');
+var async = require("async");
 
 const FILENAME_CONFIRMED = "/confirmed.csv"
 const FILENAME_DEATHS = "/deaths.csv"
 const FILENAME_RECOVERED = "/recovered.csv"
+const FILENAME_PORTUGAL = require("./portugal.json")
 //start app 
 const port = process.env.PORT || 3000;
 
@@ -243,6 +246,8 @@ app.get('/dates', function (req, res) {
     res.status(200).json(dates);
 });
 
+// https://services.arcgis.com/CCZiGSEQbAxxFVh3/arcgis/rest/services/COVID19Portugal_view/FeatureServer/1/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=dist_casosconf%20asc
+
 function extract(filename) {
     const csv = fs.readFileSync(__dirname + filename);
     const [headers, ...rows] = parse(csv);
@@ -251,6 +256,7 @@ function extract(filename) {
 
     rows.forEach(([province, country, lat, long, ...counts]) => {
         let row = {}
+
         if (province) {
             //console.log(province +" - " + country)
             row["province"] = province
@@ -269,7 +275,11 @@ function extract(filename) {
         });
         row["data"] = data;
         countList.push(row)
+
     });
+    getPortugalData(filename, dates).forEach(row => {
+        countList.push(row)
+    })
     return [countList, dates];
 }
 
@@ -289,4 +299,60 @@ for (let index = 0; index < confirmed.length; index++) {
         }
     })
     results[index].data
+}
+
+function getPortugalData(type, dates) {
+    var portugalData = JSON.parse(JSON.stringify(FILENAME_PORTUGAL));
+    var codeNames = portugalData.fields[3].domain.codedValues
+    var portugal_results = []
+
+    codeNames.forEach(line => {
+        let province = {}
+        province.province = line.name
+        province.country = "Portugal"
+        let location = line.code.replace("_", " ").replace("+", "").split(" ")
+        province.lat = location[0]
+        province.lon = location[1]
+        portugal_results.push(province)
+    })
+
+    portugal_results.forEach(function (province, i) {
+        let data = {}
+        dates.forEach((date, i) => {
+            data[date] = 0
+        });
+        portugalData.features.forEach(feature => {
+            //console.log(feature)
+            if (feature.attributes.Distrito !== null) {
+                if (feature.attributes.Distrito.includes("+")) {
+                    if (province.province == codeNames[codeNames.findIndex(p => p.code == feature.attributes.Distrito)].name) {
+                        if (type == "/confirmed.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_casosconf
+                        }
+                        else if (type == "/deaths.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_obitos
+                        }
+                        else if (type == "/recovered.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_recuperados
+                        }
+                    }
+                }
+                else {
+                    if (province.province == feature.attributes.Distrito) {
+                        if (type == "/confirmed.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_casosconf
+                        }
+                        else if (type == "/deaths.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_obitos
+                        }
+                        else if (type == "/recovered.csv") {
+                            data[dateFormat(new Date(feature.attributes.datarel), "m/d/yy")] = feature.attributes.dist_recuperados
+                        }
+                    }
+                }
+            }
+        })
+        portugal_results[i].data = data
+    })
+    return portugal_results
 }

@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/nunokisc/timeseries-map-covid19#readme",
   "dependencies": {
+    "async": "^3.2.0",
     "csv-parse": "^4.8.8",
+    "dateformat": "^3.0.3",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0"
   }
