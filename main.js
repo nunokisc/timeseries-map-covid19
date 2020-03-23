@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 var http = require('http').createServer(app);
 var dateFormat = require('dateformat');
-var async = require("async");
+const cors = require('cors');
 
 const FILENAME_CONFIRMED = "/confirmed.csv"
 const FILENAME_DEATHS = "/deaths.csv"
@@ -12,6 +12,8 @@ const FILENAME_RECOVERED = "/recovered.csv"
 const FILENAME_PORTUGAL = require("./portugal.json")
 //start app 
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 http.listen(port, () => console.log(`listening on *: ${port}!`))
 
